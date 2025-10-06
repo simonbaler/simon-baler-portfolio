@@ -1,11 +1,20 @@
 {
-  "name": "BALER SIMON",
-  "email": "simonbaler21@gmail.com",
-  "phone": "+91 9392867166",
-  "location": "Hyderabad, Telangana, India",
-  "linkedin": "https://www.linkedin.com/in/simon-baler-60b105384",
-  "objective": "Motivated Computer Science student with strong technical, analytical, and problem-solving skills. Experienced in building real-world projects and winning multiple hackathons.",
+  "achievements": [
+    "Winner/Finalist in 3 Hackathons"
+  ],
   "education": "B.Tech in Computer Science & Engineering (Software Engineering) — Siddhartha Institute of Technology and Sciences (2023-2027).",
+  "email": "simonbaler21@gmail.com",
+  "linkedin": "https://www.linkedin.com/in/simon-baler-60b105384",
+  "location": "Hyderabad, Telangana, India",
+  "name": "BALER SIMON",
+  "objective": "Motivated Computer Science student with strong technical, analytical, and problem-solving skills. Experienced in building real-world projects and winning multiple hackathons.",
+  "phone": "+91 9392867166",
+  "projects": [
+    "College Connect Website",
+    "Intelligent Traffic Management System",
+    "E-Commerce Website",
+    "Music Website (Spotify Clone)"
+  ],
   "skills": [
     "Python",
     "React.js",
@@ -17,13 +26,5 @@
     "Git",
     "SQL"
   ],
-  "projects": [
-    "College Connect Website",
-    "Intelligent Traffic Management System",
-    "E-Commerce Website",
-    "Music Website (Spotify Clone)"
-  ],
-  "achievements": [
-    "Winner/Finalist in 3 Hackathons"
-  ]
+  "ui_mode": "glam"
 }
