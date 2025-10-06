@@ -1,0 +1,53 @@
+{
+  "achievements": [
+    "Winner/Finalist in 3 Hackathons",
+    "winner in hackathon 2024"
+  ],
+  "certificates": [
+    {
+      "name": "Certificate_-_2025-07-12T114209.274.png",
+      "url": "/static/uploads/Certificate_-_2025-07-12T114209.274.png",
+      "thumb": "/static/uploads/thumbs/Certificate_-_2025-07-12T114209.274.png"
+    }
+  ],
+  "education": "B.Tech in Computer Science & Engineering (Software Engineering) — Siddhartha Institute of Technology and Sciences (2023-2027).",
+  "email": "simonbaler21@gmail.com",
+  "events": [],
+  "gallery": [],
+  "linkedin": "https://www.linkedin.com/in/simon-baler-60b105384",
+  "location": "Hyderabad, Telangana, India",
+  "name": "BALER SIMON",
+  "objective": "Motivated Computer Science student with strong technical, analytical, and problem-solving skills. Experienced in building real-world projects and winning multiple hackathons.",
+  "phone": "+91 9392867166",
+  "profile": {
+    "picture": "/static/uploads/profile-photo.jpg",
+    "picture_thumb": "/static/uploads/thumbs/profile-photo.jpg"
+  },
+  "projects": [
+    "College Connect Website",
+    "Intelligent Traffic Management System",
+    "E-Commerce Website",
+    "Music Website (Spotify Clone)",
+    "nweeee"
+  ],
+  "skills": [
+    "Python",
+    "React.js",
+    "HTML",
+    "CSS",
+    "Prompt Engineering",
+    "PowerBI",
+    "Excel",
+    "Git",
+    "SQL"
+  ],
+  "snaps": [
+    {
+      "name": "My_ID-6.jpg",
+      "url": "/static/uploads/My_ID-6.jpg",
+      "thumb": "/static/uploads/thumbs/My_ID-6.jpg",
+      "description": "hhbhj"
+    }
+  ],
+  "ui_mode": "glam"
+}

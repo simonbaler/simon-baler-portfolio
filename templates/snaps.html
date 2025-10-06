@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Snaps — Simon Baler</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/snaps.css" />
+  </head>
+  <body class="{{ UI_MODE }}">
+    <main class="container">
+      <h1>Snaps</h1>
+      <p>Photos and event snapshots — swipe or use Next/Prev.</p>
+      <div class="cert-viewer">
+        <div class="cert-carousel" id="snap-carousel">
+          {% for s in snaps %}
+            <div class="cert-post" data-idx="{{ loop.index0 }}">
+              {% if s.thumb %}
+                <img src="{{ s.thumb }}" alt="{{ s.name }}" />
+              {% else %}
+                <div class="cert-placeholder">{{ s.name }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="cert-controls">
+          <button id="snap-prev" class="btn small outline">Prev</button>
+          <button id="snap-next" class="btn small outline">Next</button>
+        </div>
+        <div class="cert-details" id="snap-details"></div>
+      </div>
+      <a class="btn outline" href="/">Back to Home</a>
+    <main>
+      <section class="container section section--boxed">
+      <div class="section-heading"><h2>Snaps</h2></div>
+      <div class="grid">
+  <script>window.PAGE_DATA = window.PAGE_DATA || {}; window.PAGE_DATA.snap = {{ snaps | tojson }};</script>
+  <script src="/static/js/carousel.js"></script>

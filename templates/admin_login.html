@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/admin.css" />
+  </head>
+  <body class="{{ UI_MODE }}">
+    <main class="login">
+      <form method="post">
+        <h2>Admin Login</h2>
+        {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  <input name="username" placeholder="Username" />
+  <input name="password" placeholder="Password" type="password" />
+  <button type="submit" class="btn primary">Login</button>
+      </form>
+    </main>
+  </body>
+</html>

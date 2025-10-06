@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Events — Simon Baler</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/events.css" />
+  </head>
+  <body class="{{ UI_MODE }}">
+    <main class="container">
+      <h1>Events</h1>
+      <p>Event highlights — slide through events and read details below. Try Reels for a vertical, immersive experience.</p>
+      <div style="margin:10px 0;display:flex;gap:.6rem;align-items:center">
+        <button id="open-reels" class="btn small outline">Watch Reels</button>
+        <button id="close-reels" class="btn small ghost" style="display:none">Close Reels</button>
+      </div>
+      <div class="cert-viewer">
+        <div class="cert-carousel" id="event-carousel">
+          {% for e in [] %}
+            <div class="cert-post" data-idx="{{ loop.index0 }}">
+              <div class="cert-placeholder">{{ e.name }}</div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="cert-controls">
+          <button id="event-prev" class="btn small outline">Prev</button>
+          <button id="event-next" class="btn small outline">Next</button>
+        </div>
+        <div class="cert-details" id="event-details"></div>
+      </div>
+      <a class="btn outline" href="/">Back to Home</a>
+    <main>
+      <section class="container section section--boxed">
+      <div class="section-heading"><h2>Events</h2></div>
+      <div class="grid">
+  <script>window.PAGE_DATA = window.PAGE_DATA || {}; window.PAGE_DATA.event = {{ events | tojson }};</script>
+  <script src="/static/js/carousel.js"></script>
+  <script src="/static/js/reels.js"></script>

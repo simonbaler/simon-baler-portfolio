@@ -1,0 +1,23 @@
+/* 404 page styles — modern neon/glow */
+body{margin:0;font-family:Inter,Segoe UI,Arial;background:radial-gradient(circle at 10% 20%, rgba(124,92,255,0.06), transparent 8%), linear-gradient(180deg,#061224,#071733);color:#e6eef8}
+.page-404-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:3rem}
+.glass{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:18px;padding:2.4rem;max-width:920px;width:100%;box-shadow:0 40px 140px rgba(2,6,23,0.8);border:1px solid rgba(255,255,255,0.03);position:relative;overflow:hidden}
+.hero-404{display:flex;gap:2rem;align-items:center}
+.code{font-weight:900;font-size:7rem;line-height:1;color:transparent;background:linear-gradient(90deg,#7c5cff,#00d4ff);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 20px 40px rgba(124,92,255,0.12));}
+.message h1{margin:0 0 .6rem;font-size:1.8rem}
+.message p{color:var(--muted);margin:0 0 1.25rem}
+.orbit{position:absolute;right:-6%;top:-6%;width:420px;height:420px;border-radius:50%;pointer-events:none}
+.dot{position:absolute;width:18px;height:18px;border-radius:50%;box-shadow:0 10px 30px rgba(124,92,255,0.12)}
+.dot.a{background:linear-gradient(90deg,#7c5cff,#00d4ff);left:20%;top:30%;animation:orbitA 6s linear infinite}
+.dot.b{background:linear-gradient(90deg,#ffd166,#ff6b6b);left:60%;top:10%;animation:orbitB 8s linear infinite}
+.dot.c{background:linear-gradient(90deg,#00d4ff,#7c5cff);left:75%;top:60%;animation:orbitC 10s linear infinite}
+@keyframes orbitA{0%{transform:translate(0,0) scale(1)}25%{transform:translate(30px,-40px) scale(.9)}50%{transform:translate(0,-80px) scale(1.06)}75%{transform:translate(-30px,-40px) scale(.94)}100%{transform:translate(0,0) scale(1)}}
+@keyframes orbitB{0%{transform:translate(0,0) scale(1)}25%{transform:translate(-20px,30px) scale(.92)}50%{transform:translate(-40px,60px) scale(1.05)}75%{transform:translate(-20px,30px) scale(.96)}100%{transform:translate(0,0) scale(1)}}
+@keyframes orbitC{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-20px,-30px) scale(1.04)}100%{transform:translate(0,0) scale(1)}}
+
+/* responsive */
+@media (max-width:720px){
+  .hero-404{flex-direction:column;align-items:center;text-align:center}
+  .code{font-size:4.5rem}
+  .orbit{display:none}
+}

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin — Simon Baler</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/admin.css" />
+  </head>
+  <body class="{{ UI_MODE }}">
+    <main class="admin">
+      <h1>Admin Panel</h1>
+      <div class="actions">
+        <button id="load" class="btn outline">Load Data</button>
+        <button id="save" class="btn primary">Save Data</button>
+        <button id="reset" class="btn ghost-outline">Reset Default</button>
+        <a href="/admin/logout" class="btn ghost" style="margin-left:auto">Logout</a>
+      </div>
+
+      <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:1rem">
+        <div class="kicker">UI Mode:</div>
+        <button class="btn small outline" data-mode="mode-ultra">Ultra Neon</button>
+        <button class="btn small outline" data-mode="mode-glam">Subtle Glam</button>
+        <button class="btn small outline" data-mode="mode-subtle">Subtle</button>
+        <button class="btn small outline" data-mode="mode-lottie">Lottie</button>
+        <button class="btn small ghost" id="clear-mode">Default</button>
+      </div>
+
+      <section class="admin-grid">
+        <div class="panel">
+          <h3>Basic Info</h3>
+          <label>Name<input id="name" /></label>
+          <label>Email<input id="email" /></label>
+          <label>Phone<input id="phone" /></label>
+          <label>Location<input id="location" /></label>
+          <div style="margin-top:.6rem">
+            <div style="display:flex;gap:.6rem;align-items:center">
+              <img id="profile-preview" src="/static/images/profile.svg" alt="preview" style="width:72px;height:72px;border-radius:10px;object-fit:cover;border:1px solid rgba(255,255,255,0.04)"/>
+              <div>
+                <input type="file" id="profile-file" accept="image/*" />
+                <button id="upload-profile" class="btn small outline">Upload Profile Photo</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Skills</h3>
+          <div id="skills-list"></div>
+          <input id="skill-input" placeholder="New skill" />
+          <button id="add-skill" class="btn small outline">Add Skill</button>
+        </div>
+        <div class="panel">
+          <h3>Achievements</h3>
+          <div id="achievements-list"></div>
+          <input id="achievement-input" placeholder="New achievement" />
+          <button id="add-achievement" class="btn small outline">Add Achievement</button>
+        </div>
+        <div class="panel">
+          <h3>Projects</h3>
+          <div id="projects-list"></div>
+          <input id="project-input" placeholder="New project" />
+          <button id="add-project" class="btn small outline">Add Project</button>
+          <p style="font-size:.9rem;color:var(--muted);margin-top:.6rem">For each project you can add an animation URL below the item (Lottie JSON URL) — it will appear on the public site.</p>
+        </div>
+        <div class="panel">
+          <h3>Certificates</h3>
+          <div id="cert-list"></div>
+          <input id="cert-input" placeholder="New certificate (text)" />
+          <button id="add-cert" class="btn small outline">Add Certificate</button>
+          <div class="uploader">
+            <input type="file" id="cert-file" accept="image/*" />
+            <button id="upload-cert" class="btn small outline">Upload Certificate</button>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Snaps</h3>
+          <div id="snaps-list"></div>
+          <input id="snap-input" placeholder="New snap URL" />
+          <button id="add-snap" class="btn small outline">Add Snap</button>
+          <div class="uploader">
+            <input type="file" id="snap-file" accept="image/*" />
+            <button id="upload-snap" class="btn small outline">Upload Snap</button>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Events</h3>
+          <div id="events-list"></div>
+          <input id="event-input" placeholder="New event" />
+          <button id="add-event" class="btn small outline">Add Event</button>
+        </div>
+      </section>
+      <main>
+      <section class="container section section--boxed">
+      <div class="section-heading"><h2>Admin Panel</h2></div>
+      <div class="admin-grid">
+      <!-- Description modal used instead of prompt() -->
+      <div id="desc-modal" class="modal" aria-hidden="true" style="display:none">
+        <div class="modal-panel">
+          <h3 id="desc-modal-title">Add description</h3>
+          <textarea id="desc-modal-text" placeholder="Description (optional)" rows="5"></textarea>
+          <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:.6rem">
+            <button id="desc-modal-cancel" class="btn ghost">Cancel</button>
+            <button id="desc-modal-ok" class="btn primary">Save</button>
+          </div>
+        </div>
+      </div>
+
+        <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.6rem">
+        <div style="display:flex;gap:.6rem;align-items:center">
+          <input type="file" id="event-file" accept="image/*" />
+          <button id="upload-event" class="btn outline">Upload Event Image</button>
+          <input type="file" id="resume-file" accept=".pdf,.doc,.docx" />
+          <button id="upload-resume" class="btn outline">Upload Resume</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:.8rem">
+          <button id="update-changes" class="btn primary" style="padding:1rem 1.2rem;font-size:1.05rem">Update changes</button>
+          <div id="admin-status" style="font-size:.95rem;color:var(--muted);min-width:120px">&nbsp;</div>
+        </div>
+      </div>
+
+      <script src="/static/js/admin.js"></script>

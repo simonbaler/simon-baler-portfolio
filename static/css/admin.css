@@ -1,0 +1,54 @@
+.body-root{font-family:Inter,Segoe UI,Arial;background:radial-gradient(circle at 10% 10%, rgba(124,92,255,0.02), transparent 10%), linear-gradient(180deg,#071021,#031024);color:#e6eef8}
+.login{max-width:480px;margin:6rem auto;padding:1.8rem;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:14px;box-shadow:0 20px 60px rgba(2,6,23,.6)}
+.login input{display:block;width:100%;padding:.75rem;margin:.6rem 0;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+.login button{padding:.6rem 1rem;border-radius:10px;border:none;background:linear-gradient(90deg,#7c5cff,#00d4ff);color:#041022;font-weight:700}
+.error{color:#ffb3b3}
+.admin{max-width:1200px;margin:2rem auto;padding:1rem}
+.actions{display:flex;gap:.6rem;align-items:center;margin-bottom:1rem}
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.panel{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:1rem;border-radius:14px;border:1px solid rgba(255,255,255,0.02);box-shadow:0 10px 30px rgba(2,6,23,.5)}
+.panel{transition:transform .28s,box-shadow .28s}
+.panel:hover{transform:translateY(-8px);box-shadow:0 30px 80px rgba(2,6,23,.6);border:1px solid rgba(124,92,255,0.06)}
+.panel h3{margin-top:0}
+.panel input{width:100%;padding:.6rem;margin:.4rem 0;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit}
+.panel button{padding:.5rem .8rem;border-radius:8px;border:none;background:linear-gradient(90deg,#7c5cff,#00d4ff);color:#041022}
+.panel .btn{font-weight:700}
+.list-item{display:flex;justify-content:space-between;padding:.4rem .6rem;border-radius:8px;background:rgba(255,255,255,0.01);margin:.4rem 0;align-items:center}
+.list-item button{background:transparent;border:0;color:#ff9b9b;font-weight:700}
+.panel .small{font-size:.9rem;color:#99b3d0}
+.panel .hint{font-size:.85rem;color:#8599b6}
+.uploader{display:flex;gap:.6rem;align-items:center;margin-top:.6rem}
+.uploader input[type=file]{color:transparent}
+.uploader .btn{padding:.5rem .8rem}
+.thumb{width:96px;height:64px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.04)}
+.thumb:hover{transform:translateY(-6px);box-shadow:0 18px 48px rgba(124,92,255,0.10)}
+
+/* improved list item controls */
+.list-item .controls{display:flex;gap:.4rem;align-items:center}
+.list-item .controls .btn{padding:.36rem .5rem;font-size:.82rem;border-radius:8px}
+
+/* per-item saved badge */
+.saved-badge{display:inline-block;min-width:56px;text-align:center;padding:.25rem .45rem;border-radius:12px;background:linear-gradient(90deg,#2ee6a7,#00d4ff);color:#022026;font-weight:700;font-size:.78rem;transform:scale(.88);opacity:0;transition:transform .28s ease,opacity .28s ease}
+.saved-badge.visible{opacity:1;transform:scale(1);box-shadow:0 10px 30px rgba(0,212,255,0.12)}
+
+
+/* admin headings */
+.admin h1{font-size:1.6rem;margin:0 0 .6rem}
+.admin .hint{color:var(--muted);font-size:.95rem}
+
+
+/* uploader box */
+.uploader{background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);padding:.6rem;border-radius:10px;border:1px dashed rgba(255,255,255,0.03)}
+
+textarea{width:100%;background:#061223;color:#e6eef8;border-radius:8px;padding:1rem;border:1px solid rgba(255,255,255,0.03)}
+
+/* --- Enhanced page accents (override/augment global styles) --- */
+.section--boxed::after{opacity:.34;filter:blur(14px);animation:glowBorder 3.6s linear infinite}
+.section-heading h2{font-size:1.75rem;letter-spacing:.3px}
+.btn{box-shadow:0 14px 46px rgba(124,92,255,0.08)}
+.btn.primary:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 48px 160px rgba(124,92,255,0.18)}
+.panel{border-radius:16px}
+@media (prefers-reduced-motion: reduce){.section--boxed::after, .btn.primary:hover{animation:none;transition:none}}
+
+/* extra subtle header glow for admin header */
+.admin .actions::before{content:'';position:absolute;left:0;top:0;width:100%;height:6px;background:linear-gradient(90deg,var(--accent1),var(--accent2));opacity:0.06;filter:blur(6px)}

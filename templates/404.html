@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Page not found — 404</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/404.css" />
+  </head>
+  <body class="{{ UI_MODE }}">
+    <main class="page-404-wrap">
+      <div class="glass">
+        <div class="hero-404">
+          <div class="code">404</div>
+          <div class="message">
+            <h1>Looks like you're lost</h1>
+            <p>The page you are looking for isn't here or has been moved.</p>
+            <a class="btn primary" href="{{ url_for('index') }}">Go to Home</a>
+          </div>
+        </div>
+        <div class="orbit">
+          <div class="dot a"></div>
+          <div class="dot b"></div>
+          <div class="dot c"></div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

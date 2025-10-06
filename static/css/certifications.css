@@ -1,0 +1,31 @@
+body{font-family:Inter,Segoe UI,Arial;background:linear-gradient(180deg,#071733,#031024);color:#e6eef8}
+.section{padding:2rem 0;border-top:1px solid rgba(255,255,255,0.02);position:relative}
+.section::before{content:'';position:absolute;left:50%;top:-14px;width:70px;height:3px;background:linear-gradient(90deg,#7c5cff,#00d4ff);transform:translateX(-50%);border-radius:3px}
+.container{max-width:900px;margin:3rem auto;padding:1rem}
+.cert-card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:1rem;border-radius:12px;border:1px solid rgba(255,255,255,0.02);transition:transform .22s,box-shadow .22s}
+.cert-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(2,6,23,.5);border:1px solid rgba(124,92,255,0.06)}
+
+/* viewer styles */
+.cert-viewer{max-width:880px;margin:1.6rem auto;padding:1rem;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border-radius:14px;border:1px solid rgba(255,255,255,0.02);box-shadow:0 12px 48px rgba(2,6,23,0.5)}
+.cert-carousel{display:flex;overflow:hidden;position:relative;width:100%;height:420px}
+.cert-post{flex:0 0 100%;display:flex;align-items:center;justify-content:center;transition:transform .48s cubic-bezier(.2,.9,.2,1),opacity .36s}
+.cert-post img{max-width:100%;max-height:100%;border-radius:12px;box-shadow:0 10px 36px rgba(2,6,23,.5);border:1px solid rgba(255,255,255,0.02)}
+.cert-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--muted);background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border-radius:12px}
+.cert-controls{display:flex;gap:.6rem;justify-content:center;margin-top:.8rem}
+.cert-details{padding:1rem;margin-top:.8rem;border-top:1px solid rgba(255,255,255,0.02);color:var(--muted)}
+.cert-details h3{margin:0 0 .4rem}
+
+/* instagram-like card feel */
+.cert-post{background:#0b1220;border-radius:12px}
+.cert-post img{object-fit:contain;height:100%;width:100%;background:#071022}
+
+/* zoom modal */
+.zoom-modal{position:fixed;inset:0;background:rgba(3,6,12,0.8);display:flex;align-items:center;justify-content:center;z-index:99999;opacity:0;pointer-events:none;transition:opacity .28s}
+.zoom-modal.open{opacity:1;pointer-events:auto}
+.zoom-frame{max-width:92vw;max-height:92vh;border-radius:8px;overflow:hidden;background:rgba(0,0,0,0.6);padding:14px}
+.zoom-frame img{max-width:88vw;max-height:82vh;border-radius:6px;display:block}
+
+@media (max-width:720px){
+	.cert-viewer{padding:.6rem}
+	.cert-carousel{height:320px}
+}

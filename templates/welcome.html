@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Welcome — Simon Baler</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/welcome.css" />
+  </head>
+  <body class="{{ UI_MODE }}">
+    <div class="overlay">
+      <div class="popup" id="popup">
+        <h1>Welcome to Simon Baler Portfolio</h1>
+        <p class="sub">Please select your language</p>
+        <div class="lang-grid">
+          <button class="lang btn small outline" data-lang="telugu">Telugu</button>
+          <button class="lang btn small outline" data-lang="hindi">Hindi</button>
+          <button class="lang btn small outline" data-lang="english">English</button>
+          <button class="lang btn small outline" data-lang="ehinglish">E-Hinglish</button>
+          <button class="lang btn small outline" data-lang="kannada">Kannada</button>
+        </div>
+        <div class="actions">
+          <button id="skip" class="btn ghost-outline">Skip</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // speak welcome
+      function speak(text){
+        try{
+          const u = new SpeechSynthesisUtterance(text);
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(u);
+        }catch(e){ /* ignore if not supported */ }
+      }
+      document.addEventListener('DOMContentLoaded', ()=>{
+        speak('Welcome to Simon Baler Portfolio. Please select your language.');
+        document.querySelectorAll('.lang').forEach(b=>{
+          b.addEventListener('click', async ()=>{
+            const lang = b.dataset.lang;
+            await fetch('/set-lang',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lang})});
+            window.location = '/';
+          })
+        })
+        document.getElementById('skip').addEventListener('click', async ()=>{
+          await fetch('/set-lang',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lang:'english'})});
+          window.location = '/';
+        })
+      })
+    </script>
+  </body>
+</html>

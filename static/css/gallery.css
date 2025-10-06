@@ -1,0 +1,12 @@
+
+body{font-family:Inter,Segoe UI,Arial;background:#071021;color:#e6eef8}
+.section{padding:2rem 0;border-top:1px solid rgba(255,255,255,0.02);position:relative}
+.section::before{content:'';position:absolute;left:50%;top:-14px;width:70px;height:3px;background:linear-gradient(90deg,#7c5cff,#00d4ff);transform:translateX(-50%);border-radius:3px}
+.container{max-width:1000px;margin:3rem auto;padding:1rem}
+
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}
+.gallery img{width:100%;height:140px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.03);transition:transform .18s,box-shadow .18s}
+.gallery img:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 16px 46px rgba(124,92,255,0.06)}
+.gallery figure{margin:0}
+.gallery figcaption{font-size:.85rem;color:#9fb5d0;margin-top:.4rem}
+
