@@ -1,4 +1,4 @@
-:root{
+re:root{
   --bg1: #061224;
   --bg2: #071733;
   --card: rgba(255,255,255,0.03);
@@ -23,6 +23,8 @@ body{margin:0;font-family:Inter,Segoe UI,Arial,system-ui;background:radial-gradi
 .intro{flex:1}
 #name{font-size:2.6rem;margin:0 0 .3rem;background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.6px}
 .top-row{display:flex;align-items:center;gap:1rem}
+.logo{width:50px;height:50px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.1);transition:transform .2s ease,box-shadow .2s ease}
+.logo:hover{transform:scale(1.1);box-shadow:0 8px 25px rgba(124,92,255,0.2)}
 .subtitle{color:var(--muted);margin:0 0 1rem}
 .contact a{color:#cfe9ff;margin-right:.5rem;text-decoration:none}
 .cta-row{margin-top:1.25rem}
@@ -30,6 +32,14 @@ body{margin:0;font-family:Inter,Segoe UI,Arial,system-ui;background:radial-gradi
 .btn.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));box-shadow:0 12px 30px rgba(124,92,255,.12);color:#041022}
 .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
 .btn:hover{transform:translateY(-4px)}
+
+@keyframes buttonPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.btn.animated { animation: buttonPulse 2s infinite; }
 
 /* Enhanced button variants and utilities */
 .btn.large{padding:.9rem 1.25rem;border-radius:14px;font-size:1rem}
@@ -69,6 +79,24 @@ body.mode-subtle .card, body.mode-subtle .panel{background:linear-gradient(180de
 body.mode-lottie{--accent1:#7cc6ff;--accent2:#b2f7ff;--glow:rgba(124,198,255,0.1);background:radial-gradient(circle at 50% 0%, rgba(124,198,255,0.04), transparent 14%), linear-gradient(180deg,#061a2b,#07283c);}
 body.mode-lottie .project-lottie{height:140px}
 body.mode-lottie .card, body.mode-lottie .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(124,198,255,0.04);box-shadow:0 20px 60px rgba(124,198,255,0.06)}
+
+/* HR: professional corporate view */
+body.mode-hr{--accent1:#0052cc;--accent2:#00a3cc;--glow:rgba(0,82,204,0.12);background:radial-gradient(circle at 20% 20%, rgba(0,82,204,0.04), transparent 12%), linear-gradient(180deg,#0a1a2e,#0f2236);}
+body.mode-hr .card, body.mode-hr .panel{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(0,82,204,0.04);box-shadow:0 16px 48px rgba(0,82,204,0.08)}
+
+/* Lectures: educational structured view */
+body.mode-lectures{--accent1:#28a745;--accent2:#ffc107;--glow:rgba(40,167,69,0.14);background:radial-gradient(circle at 30% 10%, rgba(40,167,69,0.04), transparent 10%), linear-gradient(180deg,#0e1b0f,#1a2e1a);}
+body.mode-lectures .card, body.mode-lectures .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(40,167,69,0.05);box-shadow:0 18px 54px rgba(40,167,69,0.08)}
+
+/* HR Interview: professional sharp view */
+body.mode-hr-interview{--accent1:#003366;--accent2:#0066cc;--glow:rgba(0,51,102,0.12);background:radial-gradient(circle at 20% 20%, rgba(0,51,102,0.04), transparent 12%), linear-gradient(180deg,#0a1a2e,#0f2236);--card-radius:6px;}
+body.mode-hr-interview .card, body.mode-hr-interview .panel{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(0,51,102,0.04);box-shadow:0 8px 24px rgba(0,51,102,0.08);border-radius:6px;}
+body.mode-hr-interview .card:hover{transform:translateY(-6px);box-shadow:0 12px 36px rgba(0,51,102,0.1);}
+
+/* Lecture View: presentation slide view */
+body.mode-lecture-view{--accent1:#28a745;--accent2:#ffc107;--glow:rgba(40,167,69,0.14);background:radial-gradient(circle at 30% 10%, rgba(40,167,69,0.04), transparent 10%), linear-gradient(180deg,#0e1b0f,#1a2e1a);--card-radius:0px;}
+body.mode-lecture-view .card, body.mode-lecture-view .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(40,167,69,0.05);box-shadow:0 12px 40px rgba(40,167,69,0.08);border-radius:0px;}
+body.mode-lecture-view .card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 60px rgba(40,167,69,0.12);}
 
 /* Lottie-friendly tweaks: slower pulses, more subtle shadow */
 body.mode-lottie .pulse{animation-duration:1.35s}
@@ -112,11 +140,11 @@ body.mode-lottie .project-lottie{height:120px}
 .content{padding:2rem 0}
 .section{padding:2rem 0}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
-.cards{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.cards{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));perspective:1200px}
 .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:1.25rem;border-radius:14px;border:1px solid rgba(255,255,255,0.02);transition:transform .25s ease,box-shadow .25s}
 .card.enter{transform:translateY(0);opacity:1}
 .card{transform:translateZ(0);will-change:transform}
-.card:hover{transform:translateY(-12px) rotateX(2deg);box-shadow:0 30px 70px rgba(2,6,23,.6);border:1px solid rgba(124,92,255,0.06)}
+.card:hover{transform:translateY(-12px);box-shadow:0 30px 70px rgba(2,6,23,.6);border:1px solid rgba(124,92,255,0.06)}
 .reveal{opacity:0;transform:translateY(18px) scale(.995);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.9,.2,1)}
 .reveal.visible{opacity:1;transform:translateY(0) scale(1)}
 
@@ -145,7 +173,7 @@ body.mode-lottie .project-lottie{height:120px}
 
 /* subtle animated gradient overlay */
 .glow-plate{position:relative;overflow:hidden}
-.glow-plate::after{content:'';position:absolute;inset:-40%;background:radial-gradient(circle at 10% 10%, rgba(124,92,255,0.14), transparent 8%), radial-gradient(circle at 90% 90%, rgba(0,212,255,0.08), transparent 10%);filter:blur(36px);opacity:.9;transform:translateY(0);transition:opacity .28s}
+.glow-plate::after{content:'';position:absolute;inset:-40%;background:radial-gradient(circle at 10% 10%, rgba(124,92,255,0.14), transparent 8%), radial-gradient(circle at 90% 90%, rgba(0,212,255,0.08), transparent 10%);filter:blur(36px);opacity:.9;transform:translateY(0);transition:opacity .28s;pointer-events:none}
 
 /* small-screen fallback: reduce heavy effects */
 @media (max-width:560px){
@@ -179,6 +207,26 @@ body.mode-lottie .project-lottie{height:120px}
   40%{transform:translateY(-10px) scale(1.02)}
   100%{transform:translateY(0) scale(1)}
 }
+@keyframes hrPulse{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+  100%{transform:translateY(0)}
+}
+@keyframes lecturesWave{
+  0%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-8px) scale(1.01)}
+  100%{transform:translateY(0) scale(1)}
+}
+@keyframes hrInterviewPulse{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+  100%{transform:translateY(0)}
+}
+@keyframes lectureViewWave{
+  0%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-10px) scale(1.02)}
+  100%{transform:translateY(0) scale(1)}
+}
 
 /* Section lining: small accent bar / animated underline that varies by mode */
 .section::before{content:'';position:absolute;left:50%;top:-18px;width:120px;height:6px;border-radius:6px;transform:translateX(-50%);opacity:.9;pointer-events:none}
@@ -209,12 +257,40 @@ body.mode-lottie .hero::before{filter:blur(28px);opacity:.9;animation:lottieWave
 body.mode-lottie .project-lottie{transform-origin:center center;animation:lottieWave 5s ease-in-out infinite}
 body.mode-lottie .card:hover, body.mode-lottie .project-card:hover{box-shadow:0 36px 100px rgba(124,198,255,0.06);transform:translateY(-14px)}
 
+/* HR: steady pulse for professional feel */
+body.mode-hr .section::before{background:linear-gradient(90deg,#0052cc,#00a3cc);box-shadow:0 10px 40px rgba(0,82,204,0.1);animation:hrPulse 6s ease-in-out infinite}
+body.mode-hr .section--boxed::after{background:linear-gradient(90deg,rgba(0,82,204,0.08),rgba(0,163,204,0.06));filter:blur(8px);}
+body.mode-hr .hero::before{filter:blur(32px);opacity:.9;animation:hrPulse 7s ease-in-out infinite}
+body.mode-hr .card:hover, body.mode-hr .project-card:hover{box-shadow:0 24px 80px rgba(0,82,204,0.08);transform:translateY(-10px);}
+
+/* Lectures: educational wave */
+body.mode-lectures .section::before{background:linear-gradient(90deg,#28a745,#ffc107);box-shadow:0 12px 44px rgba(40,167,69,0.1);animation:lecturesWave 5s ease-in-out infinite}
+body.mode-lectures .section--boxed::after{background:linear-gradient(90deg,rgba(40,167,69,0.08),rgba(255,193,7,0.06));filter:blur(10px);}
+body.mode-lectures .hero::before{filter:blur(30px);opacity:.9;animation:lecturesWave 6s ease-in-out infinite}
+body.mode-lectures .card:hover, body.mode-lectures .project-card:hover{box-shadow:0 28px 90px rgba(40,167,69,0.08);transform:translateY(-12px);}
+
+/* HR Interview: sharp pulse for professional feel */
+body.mode-hr-interview .section::before{background:linear-gradient(90deg,#003366,#0066cc);box-shadow:0 10px 40px rgba(0,51,102,0.1);animation:hrInterviewPulse 7s ease-in-out infinite}
+body.mode-hr-interview .section--boxed::after{background:linear-gradient(90deg,rgba(0,51,102,0.08),rgba(0,102,204,0.06));filter:blur(8px);}
+body.mode-hr-interview .hero::before{filter:blur(32px);opacity:.9;animation:hrInterviewPulse 7s ease-in-out infinite}
+body.mode-hr-interview .card:hover, body.mode-hr-interview .project-card:hover{box-shadow:0 24px 80px rgba(0,51,102,0.08);transform:translateY(-10px);}
+
+/* Lecture View: presentation slide wave */
+body.mode-lecture-view .section::before{background:linear-gradient(90deg,#28a745,#ffc107);box-shadow:0 12px 44px rgba(40,167,69,0.1);animation:lectureViewWave 6s ease-in-out infinite}
+body.mode-lecture-view .section--boxed::after{background:linear-gradient(90deg,rgba(40,167,69,0.08),rgba(255,193,7,0.06));filter:blur(10px);}
+body.mode-lecture-view .hero::before{filter:blur(30px);opacity:.9;animation:lectureViewWave 6s ease-in-out infinite}
+body.mode-lecture-view .card:hover, body.mode-lecture-view .project-card:hover{box-shadow:0 28px 90px rgba(40,167,69,0.08);transform:translateY(-12px);}
+
 /* subtle accent lines inside panels */
 .panel::after{content:'';position:absolute;right:10px;top:10px;width:6px;height:calc(100% - 20px);border-radius:6px;opacity:.08;pointer-events:none}
 body.mode-ultra .panel::after{background:linear-gradient(180deg,#ff00c8,#00fff6)}
 body.mode-glam .panel::after{background:linear-gradient(180deg,#ffb86b,#ff6fa3)}
 body.mode-subtle .panel::after{background:linear-gradient(180deg,#91b4ff,#9ee7ff)}
 body.mode-lottie .panel::after{background:linear-gradient(180deg,#7cc6ff,#b2f7ff)}
+body.mode-hr .panel::after{background:linear-gradient(180deg,#0052cc,#00a3cc)}
+body.mode-lectures .panel::after{background:linear-gradient(180deg,#28a745,#ffc107)}
+body.mode-hr-interview .panel::after{background:linear-gradient(180deg,#003366,#0066cc)}
+body.mode-lecture-view .panel::after{background:linear-gradient(180deg,#28a745,#ffc107)}
 
 /* animated gradient overlay for highlighted plates */
 .glow-plate::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg, rgba(124,92,255,0.08), rgba(0,212,255,0.06));mix-blend-mode:overlay;opacity:0;transition:opacity .28s}
@@ -234,8 +310,8 @@ body.mode-lottie .panel::after{background:linear-gradient(180deg,#7cc6ff,#b2f7ff
 .project-card:hover{transform:translateY(-10px);box-shadow:0 20px 50px rgba(2,6,23,.5)}
 
 /* Navigation buttons */
-.nav-buttons{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1rem}
-.nav-buttons .btn{background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.02);}
+.nav-buttons{display:flex !important;flex-wrap:wrap;gap:.6rem;margin-bottom:1rem;opacity:1 !important;visibility:visible !important;}
+.nav-buttons .btn{background:linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));border:1px solid rgba(255,255,255,0.1);display:flex !important;opacity:1 !important;visibility:visible !important;}
 
 /* subtle float animation */
 @keyframes float{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-18px) translateX(6px)}100%{transform:translateY(0) translateX(0)}}
@@ -272,6 +348,7 @@ body.light{background:linear-gradient(180deg,#f5f9ff,#eaf2ff);color:#0b1724}
 body.light .card, body.light .profile-card, body.light .panel{background:linear-gradient(180deg,rgba(11,23,36,0.03),#fff);border-color:rgba(11,23,36,0.06)}
 body.light .btn.primary{color:#041022}
 body.light .chat-header{color:#041022}
+body.light .nav-buttons .btn{background:linear-gradient(90deg, rgba(0,0,0,0.05), rgba(0,0,0,0.02));border:1px solid rgba(0,0,0,0.1);color:#0b1724}
 
 /* Theme toggle styles */
 .theme-toggle{display:inline-block;margin-left:12px}
@@ -302,12 +379,22 @@ body.mode-subtle .nav-buttons .btn{background:linear-gradient(90deg,#91b4ff,#9ee
 body.mode-lottie header.hero{background:linear-gradient(90deg, rgba(124,198,255,0.02), rgba(178,247,255,0.01));border-bottom:1px solid rgba(124,198,255,0.02)}
 body.mode-lottie .nav-buttons .btn{background:linear-gradient(90deg,#7cc6ff,#b2f7ff);color:#041022}
 
+body.mode-hr header.hero{background:linear-gradient(90deg, rgba(0,82,204,0.03), rgba(0,163,204,0.02));border-bottom:1px solid rgba(0,82,204,0.03)}
+body.mode-hr .nav-buttons .btn{background:linear-gradient(90deg,#0052cc,#00a3cc);color:#041022}
+
+body.mode-lectures header.hero{background:linear-gradient(90deg, rgba(40,167,69,0.03), rgba(255,193,7,0.02));border-bottom:1px solid rgba(40,167,69,0.03)}
+body.mode-lectures .nav-buttons .btn{background:linear-gradient(90deg,#28a745,#ffc107);color:#041022}
+
 /* subtle differences in avatar ring and project card accent */
 .avatar{box-shadow:0 12px 40px rgba(0,0,0,0.45)}
 body.mode-ultra .avatar{border:4px solid linear-gradient(90deg,#ff00c8,#00fff6)}
 body.mode-glam .avatar{border:4px solid linear-gradient(90deg,#ffb86b,#ff6fa3)}
 body.mode-subtle .avatar{border:4px solid linear-gradient(90deg,#91b4ff,#9ee7ff)}
 body.mode-lottie .avatar{border:4px solid linear-gradient(90deg,#7cc6ff,#b2f7ff)}
+body.mode-hr .avatar{border:4px solid linear-gradient(90deg,#0052cc,#00a3cc)}
+body.mode-lectures .avatar{border:4px solid linear-gradient(90deg,#28a745,#ffc107)}
+body.mode-hr-interview .avatar{border:4px solid linear-gradient(90deg,#003366,#0066cc)}
+body.mode-lecture-view .avatar{border:4px solid linear-gradient(90deg,#28a745,#ffc107)}
 
 
 /* Ensure card radius is controlled by variable (appended override) */
@@ -318,6 +405,34 @@ body.mode-ultra{--font-strong:800;--font-regular:600;--icon-opacity:1}
 body.mode-glam{--font-strong:700;--font-regular:500;--icon-opacity:0.95}
 body.mode-subtle{--font-strong:600;--font-regular:450;--icon-opacity:0.9}
 body.mode-lottie{--font-strong:700;--font-regular:520;--icon-opacity:0.98}
+body.mode-hr{--font-strong:750;--font-regular:550;--icon-opacity:0.95}
+body.mode-lectures{--font-strong:650;--font-regular:500;--icon-opacity:0.96}
+
+/* Per-mode layout adjustments */
+body.mode-ultra .grid { grid-template-columns: 1fr; }
+body.mode-ultra .section { padding: 1.5rem 0; }
+body.mode-ultra .card { padding: 1rem; }
+
+body.mode-glam .grid { grid-template-columns: repeat(3, 1fr); }
+body.mode-glam .section { padding: 4rem 0; }
+body.mode-glam .card { padding: 2rem; }
+
+body.mode-subtle .grid { grid-template-columns: 1fr 1fr; }
+body.mode-subtle .section { padding: 2.5rem 0; }
+body.mode-subtle .card { padding: 1.25rem; }
+
+body.mode-lottie .grid { display: flex; flex-wrap: wrap; justify-content: center; }
+body.mode-lottie .card { width: 280px; margin: 1rem; }
+
+body.mode-hr .grid { grid-template-columns: 1fr; }
+body.mode-hr .hero .container { flex-direction: column; text-align: center; }
+body.mode-hr .section { padding: 3rem 0; }
+body.mode-hr .card { padding: 1.5rem; }
+
+body.mode-lectures .grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+body.mode-lectures .hero .container { flex-direction: row; }
+body.mode-lectures .section { padding: 3.5rem 0; }
+body.mode-lectures .card { padding: 1.75rem; }
 
 /* Certifications page override: minimal visual, lower glow */
 body.cert-page, .cert-page{background:linear-gradient(180deg,#071022,#071022) !important}
@@ -328,4 +443,128 @@ body.cert-page, .cert-page{background:linear-gradient(180deg,#071022,#071022) !i
 h1,h2,h3{font-weight:var(--font-strong)}
 body,p,span,a{font-weight:var(--font-regular)}
 .icon{opacity:var(--icon-opacity)}
+
+/* Contact form styles */
+.contact-form{max-width:500px;margin:1rem auto 0}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;margin-bottom:.5rem;color:var(--muted);font-weight:500}
+.form-group input,.form-group textarea{width:100%;padding:.75rem;border:1px solid rgba(255,255,255,0.1);border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));color:#e6eef8;font-family:inherit;font-size:1rem;transition:border-color .2s,box-shadow .2s}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--accent1);box-shadow:0 0 0 3px rgba(124,92,255,0.1)}
+.form-group textarea{resize:vertical;min-height:100px}
+
+/* Advanced animations and micro-interactions */
+/* Button ripple effect */
+.btn{position:relative;overflow:hidden}
+.btn::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.3);transform:translate(-50%,-50%);transition:width 0.6s,height 0.6s}
+.btn:active::before{width:300px;height:300px}
+
+/* Enhanced skill hover */
+.skill{transition:transform 0.3s ease,box-shadow 0.3s ease}
+.skill:hover{transform:scale(1.05) rotate(2deg);box-shadow:0 8px 25px rgba(124,92,255,0.2)}
+
+/* Loading spinner */
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid rgba(255,255,255,0.3);border-radius:50%;border-top-color:var(--accent1);animation:spin 1s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Parallax keyframes */
+@keyframes parallax{0%{transform:translateY(0)}100%{transform:translateY(-20px)}}
+
+/* Particle float for ultra mode */
+@keyframes particleFloat{0%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(180deg)}100%{transform:translateY(0) rotate(360deg)}}
+
+/* Typewriter cursor */
+#name::after{content:'|';animation:blink 1s infinite}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+
+/* Staggered reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* Smooth transitions for mode switches */
+body{transition:background 0.5s ease,color 0.5s ease}
+.card{transition:transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94),box-shadow 0.4s ease}
+
+/* Performance optimizations */
+* {will-change:auto}
+.card {will-change:transform}
+.hero {will-change:transform}
+
+/* Mobile optimizations */
+@media (max-width:768px){
+  .hero::before{filter:blur(20px);opacity:0.7}
+  .card:hover{transform:none} /* Disable hover on touch */
+}
+
+/* Enhanced UI: More section boxes, lining boxes, and glow effects */
+.section--boxed {
+  position: relative;
+  border: 2px solid rgba(255,255,255,0.05);
+  box-shadow: 0 20px 60px rgba(2,6,23,0.8), 0 0 0 1px rgba(124,92,255,0.1);
+}
+
+.section--boxed::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 18px;
+  padding: 4px;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  opacity: 0.15;
+  pointer-events: none;
+  filter: blur(8px);
+  animation: enhancedGlow 6s ease-in-out infinite;
+}
+
+@keyframes enhancedGlow {
+  0% { opacity: 0.1; transform: scale(1); }
+  50% { opacity: 0.2; transform: scale(1.02); }
+  100% { opacity: 0.1; transform: scale(1); }
+}
+
+/* Lining boxes for sections */
+.section {
+  border-left: 4px solid var(--accent1);
+  border-right: 4px solid var(--accent2);
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.section::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  opacity: 0.5;
+}
+
+/* Enhanced glow for cards */
+.card, .project-card {
+  box-shadow: 0 20px 60px rgba(2,6,23,0.7), 0 0 20px rgba(124,92,255,0.15);
+}
+
+.card:hover, .project-card:hover {
+  box-shadow: 0 40px 120px rgba(124,92,255,0.25), 0 0 40px rgba(0,212,255,0.2);
+}
+
+/* Additional lining for panels */
+.panel {
+  border: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+}
+
+.panel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -2px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent1), var(--accent2));
+  opacity: 0.3;
+}
 

@@ -23,6 +23,10 @@
         <button class="btn small outline" data-mode="mode-glam">Subtle Glam</button>
         <button class="btn small outline" data-mode="mode-subtle">Subtle</button>
         <button class="btn small outline" data-mode="mode-lottie">Lottie</button>
+        <button class="btn small outline" data-mode="mode-hr">HR View</button>
+        <button class="btn small outline" data-mode="mode-lectures">Lectures View</button>
+        <button class="btn small outline" data-mode="mode-hr-interview">HR Interview</button>
+        <button class="btn small outline" data-mode="mode-lecture-view">Lecture View</button>
         <button class="btn small ghost" id="clear-mode">Default</button>
       </div>
 
@@ -58,9 +62,16 @@
         <div class="panel">
           <h3>Projects</h3>
           <div id="projects-list"></div>
-          <input id="project-input" placeholder="New project" />
+          <label>Title<input id="project-title" placeholder="Project title" /></label>
+          <label>Description<textarea id="project-desc" placeholder="Project description" rows="3"></textarea></label>
+          <label>Languages<input id="project-languages" placeholder="e.g. Python, React.js" /></label>
+          <label>GitHub Link<input id="project-github" placeholder="https://github.com/..." /></label>
+          <div class="uploader">
+            <input type="file" id="project-file" accept="image/*" multiple />
+            <button id="upload-project" class="btn small outline">Upload Images</button>
+          </div>
           <button id="add-project" class="btn small outline">Add Project</button>
-          <p style="font-size:.9rem;color:var(--muted);margin-top:.6rem">For each project you can add an animation URL below the item (Lottie JSON URL) — it will appear on the public site.</p>
+          <p style="font-size:.9rem;color:var(--muted);margin-top:.6rem">Upload images for the project after adding it. For each project you can add an animation URL below the item (Lottie JSON URL) — it will appear on the public site.</p>
         </div>
         <div class="panel">
           <h3>Certificates</h3>

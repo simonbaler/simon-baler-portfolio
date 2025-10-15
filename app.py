@@ -11,6 +11,9 @@ import logging
 import threading
 import queue
 import time
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # optional advanced libs
 try:
@@ -48,10 +51,38 @@ PROFILE = {
     "education": "B.Tech in Computer Science & Engineering (Software Engineering) — Siddhartha Institute of Technology and Sciences (2023-2027).",
     "skills": ["Python", "React.js", "HTML", "CSS", "Prompt Engineering", "PowerBI", "Excel", "Git", "SQL"],
     "projects": [
-        "College Connect Website",
-        "Intelligent Traffic Management System",
-        "E-Commerce Website",
-        "Music Website (Spotify Clone)"
+        {
+            "title": "College Connect Website",
+            "description": "A web platform connecting college students with resources and events.",
+            "languages": "HTML, CSS, JavaScript, Python",
+            "github": "https://github.com/simonbaler/college-connect",
+            "images": [],
+            "lottie": ""
+        },
+        {
+            "title": "Intelligent Traffic Management System",
+            "description": "An AI-based system for optimizing traffic flow in urban areas.",
+            "languages": "Python, OpenCV, TensorFlow",
+            "github": "https://github.com/simonbaler/traffic-management",
+            "images": [],
+            "lottie": ""
+        },
+        {
+            "title": "E-Commerce Website",
+            "description": "A full-stack e-commerce platform with user authentication and payment integration.",
+            "languages": "React.js, Node.js, MongoDB",
+            "github": "https://github.com/simonbaler/ecommerce",
+            "images": [],
+            "lottie": ""
+        },
+        {
+            "title": "Music Website (Spotify Clone)",
+            "description": "A music streaming website mimicking Spotify's interface and features.",
+            "languages": "HTML, CSS, JavaScript, API Integration",
+            "github": "https://github.com/simonbaler/music-website",
+            "images": [],
+            "lottie": ""
+        }
     ],
     "achievements": ["Winner/Finalist in 3 Hackathons"]
 }
@@ -306,141 +337,7 @@ def save_data(obj):
     with open(DATA_PATH, 'w', encoding='utf-8') as f:
         json.dump(obj, f, ensure_ascii=False, indent=2)
 
-
-# simple auth decorator
-def admin_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        if not session.get('admin'):
-            # For API endpoints or AJAX/XHR calls, return JSON 401 so JS can handle it.
-            try:
-                path = request.path or ''
-            except Exception:
-                path = ''
-            if path.startswith('/api/') or request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return jsonify({'ok': False, 'error': 'unauthorized'}), 401
-            # Otherwise, redirect to the login page for normal browser navigation
-            return redirect(url_for('admin_login'))
-        return f(*args, **kwargs)
-    return decorated
-
-
-@app.route('/admin')
-@admin_required
-def admin():
-    data = load_data()
-    return render_template('admin.html', data=data)
-
-
-@app.context_processor
-def inject_ui_mode():
-    try:
-        data = load_data()
-        m = data.get('ui_mode') or ''
-        if m:
-            return {'UI_MODE': f"mode-{m}"}
-    except Exception:
-        pass
-    return {'UI_MODE': ''}
-
-
-@app.route('/admin/login', methods=['GET','POST'])
-def admin_login():
-    if request.method == 'GET':
-        return render_template('admin_login.html')
-    body = request.form or {}
-    username = body.get('username')
-    password = body.get('password')
-    if username == 'Nani@2821' and password == 'Nani@2821':
-        session['admin'] = True
-        return redirect(url_for('admin'))
-    return render_template('admin_login.html', error='Invalid credentials')
-
-
-@app.route('/admin/logout')
-def admin_logout():
-    session.pop('admin', None)
-    return redirect(url_for('index'))
-
-
-@app.route('/api/data', methods=['GET','POST','PUT','DELETE'])
-def api_data():
-    # Basic endpoints to read/write the profile data
-    if request.method == 'GET':
-        return jsonify(load_data())
-    if request.method in ('POST','PUT'):
-        obj = request.get_json() or {}
-        # Normalize incoming payload to preserve lottie/description fields and ensure
-        # arrays like certificates/snaps/events are objects with consistent shape.
-        def normalize_items(arr):
-            out = []
-            if not isinstance(arr, list):
-                return out
-            for it in arr:
-                if isinstance(it, str):
-                    out.append({'name': it})
-                elif isinstance(it, dict):
-                    name = it.get('name') or it.get('title') or it.get('url') or ''
-                    item = {'name': name}
-                    if 'url' in it and it.get('url'):
-                        item['url'] = it.get('url')
-                    if 'thumb' in it and it.get('thumb'):
-                        item['thumb'] = it.get('thumb')
-                    # preserve lottie if present and non-empty
-                    l = it.get('lottie')
-                    if isinstance(l, str) and l.strip():
-                        item['lottie'] = l.strip()
-                    d = it.get('description')
-                    if isinstance(d, str) and d.strip():
-                        item['description'] = d.strip()
-                    out.append(item)
-                else:
-                    # ignore unknown types
-                    continue
-            return out
-
-        # normalize specific collections
-        try:
-            if 'certificates' in obj:
-                obj['certificates'] = normalize_items(obj.get('certificates', []))
-            if 'snaps' in obj:
-                obj['snaps'] = normalize_items(obj.get('snaps', []))
-            if 'events' in obj:
-                obj['events'] = normalize_items(obj.get('events', []))
-            # projects and skills should be arrays of strings; flatten if objects were provided
-            if 'projects' in obj and isinstance(obj.get('projects'), list):
-                proj = []
-                for p in obj.get('projects'):
-                    if isinstance(p, str): proj.append(p)
-                    elif isinstance(p, dict): proj.append(p.get('name') or p.get('title') or '')
-                obj['projects'] = [x for x in proj if x]
-            if 'skills' in obj and isinstance(obj.get('skills'), list):
-                skl = []
-                for s in obj.get('skills'):
-                    if isinstance(s, str): skl.append(s)
-                    elif isinstance(s, dict): skl.append(s.get('name') or '')
-                obj['skills'] = [x for x in skl if x]
-        except Exception:
-            pass
-
-        save_data(obj)
-        # Notify connected clients about UI mode change so public pages can update live
-        try:
-            ui = obj.get('ui_mode')
-            if ui:
-                send_sse('ui_mode', {'ui_mode': ui})
-        except Exception:
-            pass
-        return jsonify({'ok': True})
-    if request.method == 'DELETE':
-        # reset to default
-        save_data(PROFILE)
-        return jsonify({'ok': True})
-
-
-
 def answer_bot(message: str) -> str:
-    """Produce a simple rule-based answer based on the PROFILE data."""
     if not message:
         return "Hi — ask me about skills, projects, education, achievements, or contact details."
     m = message.lower()
@@ -466,7 +363,9 @@ def answer_bot(message: str) -> str:
     if any(w in m for w in ["skill","skills","tech","technologies"]):
         return ", ".join(load_data().get('skills', []))
     if any(w in m for w in ["project","portfolio"]):
-        return "Projects: " + ", ".join(load_data().get('projects', []))
+        projects = load_data().get('projects', [])
+        titles = [p.get('title', str(p)) for p in projects]
+        return "Projects: " + ", ".join(titles)
     if any(w in m for w in ["certificate","certificates"]):
         certs = load_data().get('certificates', [])
         if certs: return "Certificates: " + ", ".join([c.get('name') if isinstance(c, dict) else str(c) for c in certs])
@@ -480,191 +379,165 @@ def answer_bot(message: str) -> str:
     return "I can share info about education, skills, projects, achievements, or contact details. Try: 'skills', 'projects', or 'email'."
 
 
-@app.route('/')
-def index():
-    # If language not selected, direct to welcome
-    lang = session.get('lang')
-    if not lang:
-        return redirect(url_for('welcome'))
-    data = load_data()
-    return render_template('index.html', profile=data, lang=lang)
-
-
-@app.route('/welcome')
-def welcome():
-    return render_template('welcome.html')
-
-
-@app.route('/set-lang', methods=['POST'])
-def set_lang():
-    data = request.get_json() or {}
-    lang = data.get('lang') or 'english'
-    session['lang'] = lang
-    return jsonify({'ok': True, 'lang': lang})
-
-
-@app.route('/chat', methods=['POST'])
-def chat():
-    data = request.get_json() or {}
-    message = data.get('message', '')
-    # use persisted profile data for answers
-    profile = load_data()
-    reply = answer_bot(message) if 'PROFILE' in globals() else ''
-    # answer_bot references PROFILE; provide a quick mapping by substituting PROFILE
-    # For safety, if admin has updated skills/projects, we'll use the profile fields directly for some replies
-    m = message.lower()
-    if any(x in m for x in ["name", "who are you", "who is"]):
-        reply = profile.get('name')
-    elif "email" in m or "contact" in m or "gmail" in m:
-        reply = profile.get('email')
-    elif "phone" in m or "call" in m or "contact number" in m:
-        reply = profile.get('phone')
-    elif "linkedin" in m or "profile" in m:
-        reply = f"LinkedIn: {profile.get('linkedin')}"
-    elif "location" in m or "where" in m:
-        reply = profile.get('location')
-    elif "objective" in m or "goal" in m or "seeking" in m:
-        reply = profile.get('objective')
-    elif "education" in m or "college" in m or "degree" in m:
-        reply = profile.get('education')
-    elif "skills" in m or "skill" in m or "tech" in m:
-        reply = ", ".join(profile.get('skills', []))
-    elif "projects" in m or "project" in m or "portfolio" in m:
-        reply = "Projects: " + ", ".join(profile.get('projects', []))
-    elif "hackathon" in m or "award" in m or "achievement" in m:
-        reply = ", ".join(profile.get('achievements', []))
-    else:
-        # fallback
-        reply = "I can share info about my education, skills, projects, achievements, or contact details. Try asking: 'email', 'skills', or 'projects'."
-    return jsonify({"reply": reply})
-
-
-@app.route('/chat-llm', methods=['POST'])
-def chat_llm():
-    data = request.get_json() or {}
-    message = data.get('message', '')
-    # Prefer Gemini/Google Generative if GEMINI_API_KEY present
-    gemini_key = os.environ.get('GEMINI_API_KEY')
-    if gemini_key:
-        try:
-            # call Google Generative API (simple text generation)
-            url = 'https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generate'
-            headers = {'X-Goog-Api-Key': gemini_key, 'Content-Type': 'application/json'}
-            # include short profile summary as context
-            profile = load_data()
-            summary = f"Name: {profile.get('name')}\nLocation: {profile.get('location')}\nSkills: {', '.join(profile.get('skills',[]))}\nProjects: {', '.join(profile.get('projects',[]))}\nContact: {profile.get('email')} | {profile.get('phone')}"
-            prompt_text = f"You are a concise assistant that answers questions about the following profile:\n{summary}\nUser: {message}\nAnswer in one or two short sentences."
-            body = {"prompt": {"text": prompt_text}, "maxOutputTokens": 256}
-            r = requests.post(url, headers=headers, json=body, timeout=10)
-            if r.ok:
-                jr = r.json()
-                # attempt to extract the generated text
-                text = jr.get('candidates',[{}])[0].get('content','') if isinstance(jr.get('candidates'), list) else ''
-                if text:
-                    return jsonify({'reply': text.strip()})
-        except Exception as e:
-            print('Gemini error', e)
-    # fallback to rule-based
-    return chat()
-
-
-@app.route('/certifications')
-def certifications():
-    data = load_data()
-    certs = data.get('certificates', [])
-    return render_template('certifications.html', certs=certs)
-
-
-@app.route('/snaps')
-def snaps():
-    data = load_data()
-    snaps = data.get('snaps', [])
-    return render_template('snaps.html', snaps=snaps)
-
-
-@app.route('/api/upload', methods=['POST'])
-@admin_required
-def api_upload():
-    # Accept file uploads; field name 'file' and type 'cert' or 'snap'
-    f = request.files.get('file')
-    kind = request.form.get('kind', 'cert')
-    if not f or not allowed(f.filename):
-        return jsonify({'ok': False, 'error': 'Invalid file'}), 400
-    filename = secure_filename(f.filename)
-    dest = os.path.join(UPLOAD_FOLDER, filename)
-    # avoid overwrite by suffix
-    base, ext = os.path.splitext(filename)
-    i = 1
-    while os.path.exists(dest):
-        filename = f"{base}-{i}{ext}"
-        dest = os.path.join(UPLOAD_FOLDER, filename)
-        i += 1
-    f.save(dest)
-    base_ext = os.path.splitext(filename)[1].lower().lstrip('.')
-    thumb_path = os.path.join(THUMB_FOLDER, filename)
-    # perform quick image enhancement and thumbnail only for image types
+@app.context_processor
+def inject_ui_mode():
     try:
-        if base_ext in IMAGE_EXTS:
-            try:
-                enhance_image(dest)
-            except Exception:
-                pass
-            make_thumbnail(dest, thumb_path)
-            # enqueue advanced processing (OpenCV/pytesseract) for background worker if available
-            try:
-                PROCESS_QUEUE.put({'path': dest, 'kind': kind, 'name': filename})
-            except Exception:
-                pass
-        else:
-            # non-image: no thumbnail
-            thumb_path = ''
+        data = load_data()
+        m = data.get('ui_mode') or ''
+        return {'UI_MODE': f"mode-{m}" if m else ''}
     except Exception:
-        thumb_path = ''
-    # update data.json
-    data = load_data()
-    url = f"/static/uploads/{filename}"
-    thumb_url = f"/static/uploads/thumbs/{filename}"
+        return {'UI_MODE': ''}
 
-    # handle different kinds
-    if kind == 'profile':
-        # set profile picture paths
-        profile = data.get('profile', {}) if isinstance(data, dict) else {}
-        profile['picture'] = url
-        profile['picture_thumb'] = thumb_url
-        data['profile'] = profile
-        save_data(data)
-        return jsonify({'ok': True, 'url': url, 'thumb': thumb_url, 'kind': 'profile'})
-    elif kind == 'cert':
-        key = 'certificates'
-        arr = data.get(key, [])
-        arr.append({'url': url, 'thumb': thumb_url, 'name': filename})
-        data[key] = arr
-        save_data(data)
-    elif kind == 'snap':
-        key = 'snaps'
-        arr = data.get(key, [])
-        arr.append({'url': url, 'thumb': thumb_url, 'name': filename})
-        data[key] = arr
-        save_data(data)
-    elif kind == 'event':
-        key = 'events'
-        arr = data.get(key, [])
-        arr.append({'url': url, 'thumb': thumb_url, 'name': filename})
-        data[key] = arr
-        save_data(data)
-    elif kind == 'resume':
-        # save resume as a top-level entry
-        data['resume'] = {'url': url, 'name': filename}
-        save_data(data)
-    else:
-        # fallback to appending to snaps
-        key = 'snaps'
-        arr = data.get(key, [])
-        arr.append({'url': url, 'thumb': thumb_url, 'name': filename})
-        data[key] = arr
-        save_data(data)
-    # respond immediately; clients will be notified via SSE when advanced processing finishes
-    return jsonify({'ok': True, 'url': url, 'thumb': thumb_url, 'kind': key})
+# simple auth decorator
+def admin_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not session.get('admin'):
+            return redirect(url_for('admin_login'))
+        return f(*args, **kwargs)
+    return decorated
+
+
+@app.route('/admin')
+@admin_required
+def admin():
+    data = load_data()
+    return render_template('admin.html', data=data)
+
+
+@app.route('/admin/login', methods=['GET','POST'])
+def admin_login():
+    if request.method == 'GET':
+        return render_template('admin_login.html')
+    body = request.form or {}
+    username = body.get('username')
+    password = body.get('password')
+    if username == 'Nani@2821' and password == 'Nani@2821':
+        session['admin'] = True
+        return redirect(url_for('admin'))
+    return render_template('admin_login.html', error='Invalid credentials')
+
+
+@app.route('/admin/logout')
+def admin_logout():
+    session.pop('admin', None)
+    return redirect(url_for('index'))
+
+
+@app.route('/api/data', methods=['GET','POST','PUT','DELETE'])
+@admin_required
+def api_data():
+    if request.method == 'GET':
+        data = load_data()
+        return jsonify(data)
+    if request.method in ('POST','PUT'):
+        obj = request.get_json() or {}
+        # Normalize incoming payload to preserve lottie/description fields and ensure
+        # arrays like certificates/snaps/events are objects with consistent shape.
+        def normalize_items(arr):
+            if not arr or not isinstance(arr, list):
+                return []
+            out = []
+            for it in arr:
+                if isinstance(it, str):
+                    out.append({'name': it})
+                elif isinstance(it, dict):
+                    item = it.copy()
+                    # preserve lottie if present and non-empty
+                    l = it.get('lottie')
+                    if isinstance(l, str) and l.strip():
+                        item['lottie'] = l
+                    # preserve description if present and non-empty
+                    d = it.get('description')
+                    if isinstance(d, str) and d.strip():
+                        item['description'] = d
+                    out.append(item)
+                else:
+                    out.append(it)
+            return out
+
+        # normalize specific collections
+        try:
+            if 'certificates' in obj:
+                obj['certificates'] = normalize_items(obj.get('certificates'))
+            if 'snaps' in obj:
+                obj['snaps'] = normalize_items(obj.get('snaps'))
+            if 'events' in obj:
+                obj['events'] = normalize_items(obj.get('events'))
+            # projects should be arrays of dicts; convert strings to dicts if needed
+            if 'projects' in obj and isinstance(obj.get('projects'), list):
+                proj = []
+                for p in obj.get('projects'):
+                    if isinstance(p, str):
+                        proj.append({"title": p, "description": "", "languages": "", "github": "", "images": [], "lottie": ""})
+                    elif isinstance(p, dict):
+                        proj.append(p)
+                obj['projects'] = proj
+            if 'skills' in obj and isinstance(obj.get('skills'), list):
+                skl = []
+                for s in obj.get('skills'):
+                    if isinstance(s, str):
+                        skl.append(s)
+                    elif isinstance(s, dict):
+                        skl.append(s.get('name', str(s)))
+                obj['skills'] = [x for x in skl if x]
+        except Exception:
+            pass
+
+        save_data(obj)
+        # Notify connected clients about UI mode change so public pages can update live
+        try:
+            ui = obj.get('ui_mode')
+            if ui:
+                send_sse('ui_mode', {'mode': ui})
+        except Exception:
+            pass
+        return jsonify({'ok': True})
+    if request.method == 'DELETE':
+        kind = request.form.get('kind', 'cert')
+        save_data(PROFILE)
+        return jsonify({'ok': True})
+
+
+@app.route('/contact', methods=['POST'])
+def contact():
+    data = request.form or {}
+    name = data.get('from_name', '').strip()
+    user_email = data.get('from_email', '').strip()
+    message_text = data.get('message', '').strip()
+    if not all([name, user_email, message_text]):
+        return jsonify({'ok': False, 'error': 'Missing required fields'}), 400
+    # Profile email
+    profile = load_data()
+    to_email = profile.get('email', 'simonbaler21@gmail.com')
+    from_email = to_email  # Use same for sender
+    subject = f"New Contact Form Message from {name}"
+    body = f"Name: {name}\nEmail: {user_email}\nMessage:\n{message_text}"
+    # SMTP setup
+    smtp_server = 'smtp.gmail.com'
+    smtp_port = 587
+    password = os.environ.get('EMAIL_PASSWORD')
+    if not password:
+        return jsonify({'ok': False, 'error': 'Email configuration missing'}), 500
+
+    msg = MIMEMultipart()
+    msg['From'] = from_email
+    msg['To'] = to_email
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body, 'plain'))
+
+    try:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(from_email, password)
+        text = msg.as_string()
+        server.sendmail(from_email, to_email, text)
+        server.quit()
+
+        return jsonify({'ok': True, 'message': 'Email sent successfully'})
+    except Exception as e:
+        print(f'Email error: {e}')
+        return jsonify({'ok': False, 'error': 'Failed to send email'}), 500
 
 
 @app.route('/events')
@@ -681,8 +554,16 @@ def gallery():
 
 @app.route('/resume')
 def resume():
-    return render_template('resume.html')
+    data = load_data()
+    resume = data.get('resume', {})
+    return render_template('resume.html', resume=resume)
 
+
+@app.route('/projects')
+def projects():
+    data = load_data()
+    projects = data.get('projects', [])
+    return render_template('projects.html', profile=data, projects=projects)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -690,6 +571,83 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 
+@app.route('/')
+def index():
+    data = load_data()
+    lang = session.get('lang', 'english')
+    return render_template('index.html', profile=data, lang=lang)
+
+
+@app.route('/welcome')
+def welcome():
+    return render_template('welcome.html')
+    
+@app.route('/set-lang', methods=['POST'])
+def set_lang():
+    data = request.get_json() or {}
+    lang = data.get('lang') or 'english'
+    session['lang'] = lang
+    return jsonify({'ok': True, 'lang': lang})
+
+@app.route('/set-user-info', methods=['POST'])
+def set_user_info():
+    data = request.get_json() or {}
+    role = data.get('role')
+    name = data.get('name', '').strip()
+    details = data.get('details', {})
+    if not role or not name:
+        return jsonify({'ok': False, 'error': 'Missing role or name'}), 400
+    session['user_info'] = {
+        'role': role,
+        'name': name,
+        'details': details,
+        'lang': session.get('lang', 'english')
+    }
+    return jsonify({'ok': True})
+
+@app.route('/api/user-info', methods=['GET'])
+def api_user_info():
+    return jsonify(session.get('user_info', {}))
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    data = request.get_json() or {}
+    message = data.get('message', '')
+    # use persisted profile data for answers
+    profile = load_data()
+    reply = answer_bot(message)
+    return jsonify({"reply": reply})
+
+
+@app.route('/chat-llm', methods=['POST'])
+def chat_llm():
+    data = request.get_json() or {}
+    message = data.get('message', '')
+    # Prefer Gemini/Google Generative if GEMINI_API_KEY present
+    gemini_key = os.environ.get('GEMINI_API_KEY')
+    if gemini_key:
+        try:
+            # call Google Generative API (simple text generation)
+            url = 'https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generate'
+            headers = {'X-Goog-Api-Key': gemini_key, 'Content-Type': 'application/json'}
+            # include short profile summary as context
+            profile = load_data()
+            projects = profile.get('projects', [])
+            titles = [p.get('title', str(p)) for p in projects]
+            summary = f"Name: {profile.get('name')}\nLocation: {profile.get('location')}\nSkills: {', '.join(profile.get('skills',[]))}\nProjects: {', '.join(titles)}\nContact: {profile.get('email')} | {profile.get('phone')}"
+            prompt_text = f"You are a concise assistant that answers questions about the following profile:\n{summary}\nUser: {message}\nAnswer in one or two short sentences."
+            body = {"prompt": {"text": prompt_text}, "maxOutputTokens": 256}
+            r = requests.post(url, headers=headers, json=body, timeout=10)
+            if r.ok:
+                jr = r.json()
+                # attempt to extract the generated text
+                text = jr.get('candidates',[{}])[0].get('content','') if isinstance(jr.get('candidates'), list) else ''
+                if text:
+                    return jsonify({'reply': text.strip()})
+        except Exception as e:
+            print('Gemini error', e)
+    # fallback to rule-based
+    return chat()
+
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(debug=True)

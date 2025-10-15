@@ -101,6 +101,15 @@ async function render(){
       label.style.flex = '1';
       if(typeof it === 'string'){
         label.innerHTML = `<input class="inline-edit" value="${it}" data-idx="${idx}" />`;
+      }else if(dataKey === 'projects'){
+        const title = it.title || '';
+        const desc = it.description || '';
+        const languages = it.languages || '';
+        const github = it.github || '';
+        const images = it.images || [];
+        const thumbs = images.map(img => `<img class="thumb" src="${img.thumb || img.url}" alt="project image"/>`).join('');
+        const lottie = it.lottie || '';
+        label.innerHTML = `<div style="display:flex;gap:.6rem;align-items:flex-start"><div>${thumbs}</div><div style="flex:1"><input class="inline-title" placeholder="Title" value="${title}" data-idx="${idx}" /><textarea class="inline-desc" placeholder="Description" data-idx="${idx}" style="margin-top:.4rem;width:100%">${desc}</textarea><input class="inline-languages" placeholder="Languages" value="${languages}" data-idx="${idx}" style="margin-top:.4rem;width:100%"/><input class="inline-github" placeholder="GitHub URL" value="${github}" data-idx="${idx}" style="margin-top:.4rem;width:100%"/><input class="inline-lottie" placeholder="Lottie URL (optional)" value="${lottie}" data-idx="${idx}" style="margin-top:.4rem;width:100%"/></div></div>`;
       }else{
         const thumb = it.thumb? `<img class="thumb" src="${it.thumb}" alt="thumb"/>` : '';
         const name = it.name || it.url || '';
@@ -122,12 +131,25 @@ async function render(){
   controls.querySelector('.up').addEventListener('click', ()=>{ if(idx>0){ arr.splice(idx-1,0,arr.splice(idx,1)[0]); render(); autosave({key: dataKey}); } })
   controls.querySelector('.down').addEventListener('click', ()=>{ if(idx< arr.length-1){ arr.splice(idx+1,0,arr.splice(idx,1)[0]); render(); autosave({key: dataKey}); } })
   // inline edits
-  const inline = div.querySelector('.inline-edit');
-  if(inline){ inline.addEventListener('change', (e)=>{ arr[idx] = e.target.value; render(); autosave({key: dataKey, idx}); }) }
-  const inlineL = div.querySelector('.inline-lottie');
-  if(inlineL){ inlineL.addEventListener('change', (e)=>{ if(typeof arr[idx] === 'object') arr[idx].lottie = e.target.value; else { arr[idx] = {name: arr[idx], lottie: e.target.value} } render(); autosave({key: dataKey, idx}); }) }
-  const inlineDesc = div.querySelector('.inline-desc');
-  if(inlineDesc){ inlineDesc.addEventListener('change', (e)=>{ if(typeof arr[idx] === 'object') arr[idx].description = e.target.value; else { arr[idx] = {name: arr[idx], description: e.target.value} } render(); autosave({key: dataKey, idx}); }) }
+  if(dataKey === 'projects'){
+    const inlineTitle = div.querySelector('.inline-title');
+    if(inlineTitle){ inlineTitle.addEventListener('change', (e)=>{ arr[idx].title = e.target.value; render(); autosave({key: dataKey, idx}); }) }
+    const inlineDesc = div.querySelector('.inline-desc');
+    if(inlineDesc){ inlineDesc.addEventListener('change', (e)=>{ arr[idx].description = e.target.value; render(); autosave({key: dataKey, idx}); }) }
+    const inlineLang = div.querySelector('.inline-languages');
+    if(inlineLang){ inlineLang.addEventListener('change', (e)=>{ arr[idx].languages = e.target.value; render(); autosave({key: dataKey, idx}); }) }
+    const inlineGit = div.querySelector('.inline-github');
+    if(inlineGit){ inlineGit.addEventListener('change', (e)=>{ arr[idx].github = e.target.value; render(); autosave({key: dataKey, idx}); }) }
+    const inlineL = div.querySelector('.inline-lottie');
+    if(inlineL){ inlineL.addEventListener('change', (e)=>{ arr[idx].lottie = e.target.value; render(); autosave({key: dataKey, idx}); }) }
+  }else{
+    const inline = div.querySelector('.inline-edit');
+    if(inline){ inline.addEventListener('change', (e)=>{ arr[idx] = e.target.value; render(); autosave({key: dataKey, idx}); }) }
+    const inlineL = div.querySelector('.inline-lottie');
+    if(inlineL){ inlineL.addEventListener('change', (e)=>{ if(typeof arr[idx] === 'object') arr[idx].lottie = e.target.value; else { arr[idx] = {name: arr[idx], lottie: e.target.value} } render(); autosave({key: dataKey, idx}); }) }
+    const inlineDesc = div.querySelector('.inline-desc');
+    if(inlineDesc){ inlineDesc.addEventListener('change', (e)=>{ if(typeof arr[idx] === 'object') arr[idx].description = e.target.value; else { arr[idx] = {name: arr[idx], description: e.target.value} } render(); autosave({key: dataKey, idx}); }) }
+  }
       // show badge when recently saved
       const ts = savedFlags[dataKey] && savedFlags[dataKey][idx];
       if(ts && (Date.now() - ts) < 2200){ badge.classList.add('visible'); } else { badge.classList.remove('visible'); }
@@ -169,8 +191,18 @@ document.getElementById('add-skill').addEventListener('click', ()=>{
   if(!v) return; current.skills = current.skills || []; current.skills.push(v); document.getElementById('skill-input').value=''; render(); autosave();
 })
 document.getElementById('add-project').addEventListener('click', ()=>{
-  const v = document.getElementById('project-input').value.trim();
-  if(!v) return; current.projects = current.projects || []; current.projects.push(v); document.getElementById('project-input').value=''; render(); autosave();
+  const title = document.getElementById('project-title').value.trim();
+  const desc = document.getElementById('project-desc').value.trim();
+  const languages = document.getElementById('project-languages').value.trim();
+  const github = document.getElementById('project-github').value.trim();
+  if(!title) return showToast('Project title is required', 'error');
+  current.projects = current.projects || [];
+  current.projects.push({title: title, description: desc, languages: languages, github: github, images: [], lottie: ''});
+  document.getElementById('project-title').value = '';
+  document.getElementById('project-desc').value = '';
+  document.getElementById('project-languages').value = '';
+  document.getElementById('project-github').value = '';
+  render(); autosave();
 })
 // achievements add handler
 const addAchievementBtn = document.getElementById('add-achievement');
@@ -304,6 +336,21 @@ if(uploadEventBtn){
     }else showToast('Upload error', 'error')
   })
 }
+
+// upload project images
+document.getElementById('upload-project').addEventListener('click', async ()=>{
+  const files = Array.from(document.getElementById('project-file').files);
+  if(!files.length) return showToast('Choose files', 'error');
+  for(const f of files){
+    const fd = new FormData(); fd.append('file', f); fd.append('kind','project');
+    const res = await fetch('/api/upload',{method:'POST',body:fd});
+    const j = await res.json();
+    if(!j.ok){ showToast('Upload error', 'error'); return; }
+  }
+  // refresh data
+  const r = await fetch('/api/data'); current = await r.json();
+  showToast('Project images uploaded', 'success'); render(); autosave();
+})
 
 // upload resume
 const uploadResumeBtn = document.getElementById('upload-resume');

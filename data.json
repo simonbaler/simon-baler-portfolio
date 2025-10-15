@@ -9,14 +9,75 @@
   "name": "BALER SIMON",
   "objective": "Motivated Computer Science student with strong technical, analytical, and problem-solving skills. Experienced in building real-world projects and winning multiple hackathons.",
   "phone": "+91 9392867166",
+  "profile": {
+    "picture": "/static/uploads/Profile_Pic1-5.jpg",
+    "picture_thumb": "/static/uploads/thumbs/Profile_Pic1-5.jpg"
+  },
   "projects": [
-    "College Connect Website",
-    "Intelligent Traffic Management System",
-    "E-Commerce Website",
-    "Music Website (Spotify Clone)"
+    {
+      "description": "A web platform connecting college students with resources and events.",
+      "github": "https://github.com/simonbaler/college-connect",
+      "images": [],
+      "languages": "HTML, CSS, JavaScript, Python",
+      "lottie": "",
+      "title": "College Connect Website"
+    },
+    {
+      "description": "An AI-based system for optimizing traffic flow in urban areas.",
+      "github": "https://github.com/simonbaler/traffic-management",
+      "images": [],
+      "languages": "Python, OpenCV, TensorFlow",
+      "lottie": "",
+      "title": "Intelligent Traffic Management System"
+    },
+    {
+      "description": "A full-stack e-commerce platform with user authentication and payment integration.",
+      "github": "https://github.com/simonbaler/ecommerce",
+      "images": [],
+      "languages": "React.js, Node.js, MongoDB",
+      "lottie": "",
+      "title": "E-Commerce Website"
+    },
+    {
+      "description": "A music streaming website mimicking Spotify's interface and features.",
+      "github": "https://github.com/simonbaler/music-website",
+      "images": [],
+      "languages": "HTML, CSS, JavaScript, API Integration",
+      "lottie": "",
+      "title": "Music Website (Spotify Clone)"
+    },
+    {
+      "description": "hhsvhbhjbj j",
+      "github": "",
+      "images": [
+        {
+          "name": "Linkedin_Cover_Image.jpg",
+          "thumb": "/static/uploads/thumbs/Linkedin_Cover_Image.jpg",
+          "url": "/static/uploads/Linkedin_Cover_Image.jpg"
+        }
+      ],
+      "languages": "py",
+      "lottie": "",
+      "title": "appp"
+    },
+    {
+      "description": "mujhfndjdnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnbbbbbbbbbbbbbbvvvvvvvvvvvvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnffffffffffffffffffffffffffffffffffffffffffffffffffffffffffrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+      "github": "https://github.com/Nani2128/siddhartha-cse-se",
+      "images": [],
+      "languages": "py java",
+      "lottie": "",
+      "title": "hiiiiiiii"
+    },
+    {
+      "description": "bhuooooooujghvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvggggggggggggggggggggggggggggggggggggggggggggrrrrrrrrrrrrrrrrrrrr44444444444444444444444445678999999999999999999999999999999999999999",
+      "github": "https://github.com/Raj773409/Joyable?tab=readme-ov-file",
+      "images": [],
+      "languages": "mmmmm nnnnnn",
+      "lottie": "",
+      "title": "hiiiiiiiiiiiiiiippppppppppppppp"
+    }
   ],
   "skills": [
-    "Python",
     "React.js",
     "HTML",
     "CSS",
